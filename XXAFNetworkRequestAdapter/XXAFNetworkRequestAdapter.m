@@ -77,6 +77,10 @@ typedef void (^XXAFNetworkRequestCompletion)(NSURLSessionDataTask *task, id resp
     }
     
     XXAFNetworkRequestCompletion successBlock = ^(NSURLSessionDataTask *task, id responseObject) {
+        
+#ifdef DEBUG
+        NSLog(@"Response %@ %@", URLPath, responseObject);
+#endif
         XXAFNetworkResponse *tempResponse = [XXAFNetworkResponse new];
         tempResponse.statusCode = [(NSHTTPURLResponse *)task.response statusCode];
         tempResponse.responseObject = responseObject;
@@ -86,6 +90,9 @@ typedef void (^XXAFNetworkRequestCompletion)(NSURLSessionDataTask *task, id resp
     };
     
     XXAFNetworkRequestCompletion failedBlock = ^(NSURLSessionDataTask *task, NSError *error) {
+#ifdef DEBUG
+        NSLog(@"Request Error %@ %@",URLPath, error.localizedDescription);
+#endif
         XXAFNetworkResponse *tempResponse = [XXAFNetworkResponse new];
         tempResponse.statusCode = [(NSHTTPURLResponse *)task.response statusCode];
         tempResponse.error = error;
@@ -94,6 +101,9 @@ typedef void (^XXAFNetworkRequestCompletion)(NSURLSessionDataTask *task, id resp
         }
     };
     
+#ifdef DEBUG
+    NSLog(@"XXRequest: %@ %@",URLPath, parameter);
+#endif
     NSURLSessionTask *task = nil;
     if (isForm) {
         task = [mgr POST:URLPath parameters:parameter constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
