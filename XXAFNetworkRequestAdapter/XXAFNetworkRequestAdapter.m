@@ -106,7 +106,7 @@ typedef void (^XXAFNetworkRequestCompletion)(NSURLSessionDataTask *task, id resp
 #endif
     NSURLSessionTask *task = nil;
     if (isForm) {
-        task = [mgr POST:URLPath parameters:parameter constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        task = [mgr POST:URLPath parameters:parameter headers:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
             NSArray *formBodys = [request formBodyParts];
             for (id<XXPostFormBodyPart> tempPart in formBodys) {
                 NSString *name = [tempPart partName];
@@ -130,10 +130,10 @@ typedef void (^XXAFNetworkRequestCompletion)(NSURLSessionDataTask *task, id resp
     }else
     {
         if ([method isEqualToString:@"get"]) {
-            return [mgr GET:URLPath parameters:parameter progress:nil success:successBlock failure:failedBlock];
+            return [mgr GET:URLPath parameters:parameter headers:nil progress:nil success:successBlock failure:failedBlock];
         }else if ([method isEqualToString:@"post"])
         {
-            return [mgr POST:URLPath parameters:parameter progress:nil success:successBlock failure:failedBlock];
+            return [mgr POST:URLPath parameters:parameter headers:nil progress:nil success:successBlock failure:failedBlock];
         }else
         {
             NSURLRequest *tempURLRequest = [request.requestSerializer serializerRequest:request];
